@@ -7,17 +7,27 @@ module Offliberty
     def initialize song_url
       @page = Offliberty::Helpers::Connection.new(song_url)
     end
-    
-    def offliberate
-      res = @page.form.submit
-      song_url = res.links.fetch(0).href
-    end
 
     def download
-      song_url = offliberate
-      file = @page.agent.get(song_url)
-      filename = file.filename.gsub("_-_from_YouTube", "").gsub("_", " ")
       file.save(filename)
+    end
+
+    private
+
+    def fetch_page
+      @page.form.submit
+    end
+
+    def song_url
+      fetch_page.links.fetch(0).href
+    end
+
+    def file
+      @file ||= @page.agent.get(song_url)
+    end
+
+    def filename
+      file.filename.gsub("_-_from_YouTube", "").gsub("_", " ")
     end
   end
 end

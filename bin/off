@@ -11,8 +11,8 @@ def help
 end
 
 def is_url? url
-   reg = /^https?:\/\//
-   url.match(reg)
+  reg = /^https?:\/\//
+  return url[reg]
 end
 
 if ARGV.length != 1
